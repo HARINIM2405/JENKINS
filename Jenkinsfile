@@ -4,15 +4,15 @@ pipeline {
     environment {
         IMAGE_NAME = "harinim2405/my-app"
         REGISTRY = "docker.io"
-        DOCKER_CREDENTIALS_ID = "docker-hub"
-        GITHUB_CREDENTIALS_ID = "GitHub"
         APP_DIR = "/home/vboxuser/Documents/jenkins"
+        DOCKER_USER = "harinim2405"          // Replace with your Docker Hub username
+        DOCKER_PASS = "Harini@2405"          // Replace with your Docker Hub password
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git credentialsId: GITHUB_CREDENTIALS_ID, url: 'https://github.com/HARINIM2405/JENKINS.git', branch: 'main'
+                git url: 'https://github.com/HARINIM2405/JENKINS', branch: 'main'
             }
         }
 
@@ -27,9 +27,7 @@ pipeline {
         stage('Login to Docker Registry') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                    }
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                 }
             }
         }
@@ -45,7 +43,7 @@ pipeline {
         stage('Deploy using Docker Compose') {
             steps {
                 script {
-                    sh "docker-compose down && docker-compose up -d"
+                    sh "docker-compose up -d"
                 }
             }
         }
@@ -53,7 +51,7 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline executed successfully! '
+            echo 'Pipeline executed successfully!'
         }
         failure {
             echo 'Pipeline failed! Check the logs for errors.'
