@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "yourdockerhubusername/my-app"
+        IMAGE_NAME = "techtalkjervin/my-app"
         REGISTRY = "docker.io"
         DOCKER_CREDENTIALS_ID = "docker-hub-credentials"
         GITHUB_CREDENTIALS_ID = "github-credentials"
@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git credentialsId: GITHUB_CREDENTIALS_ID, url: 'https://github.com/your-repo.git', branch: 'main'
+                git credentialsId: GITHUB_CREDENTIALS_ID, url: 'https://github.com/Jervinjeno/devops-kec.git', branch: 'main'
             }
         }
 
